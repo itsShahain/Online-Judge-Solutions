@@ -1,0 +1,58 @@
+#include <bits/stdc++.h>
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+
+using namespace std;
+using namespace __gnu_pbds;
+
+// #define FILE_IO
+
+typedef long long ll;
+typedef tree<string, null_type, less<string>, rb_tree_tag, tree_order_statistics_node_update> ost;
+
+void setIO(string s) {
+    freopen((s + "_in.txt").c_str(), "r", stdin);
+    freopen((s + "_out.txt").c_str(), "w", stdout);
+}
+
+void tc() {
+}
+
+void solve() {
+    int N, Q;
+    scanf("%d %d", &N, &Q);
+    vector<ll> fenwick(N + 1, 0);
+
+    int i, j; ll delta;
+#define LSOne(S) ((S) & -(S));
+    char type;
+    while(Q--) {
+        scanf("%*c%c", &type);
+        if(type == '+') {
+            scanf("%d %lld", &i, &delta);
+            j = i + 1;
+            while(j < N + 1) {
+                fenwick[j] += delta;
+                j += LSOne(j);
+            }
+        } else if(type == '?') {
+            scanf("%d", &j);
+            ll sum = 0;
+            while(j > 0) {
+                sum += fenwick[j];
+                j -= LSOne(j);
+            }
+            printf("%lld\n", sum);
+        }
+    }
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+#ifdef FILE_IO
+    setIO("test");
+#endif
+    solve();
+    cout << flush;
+}
